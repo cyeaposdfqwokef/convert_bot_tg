@@ -1,6 +1,6 @@
-import requests
 import json
 import telebot
+from extensions import CurrencyConverter, APIException
 
 # Чтение токена бота из конфига
 with open('config.py', 'r') as f:
@@ -9,17 +9,6 @@ with open('config.py', 'r') as f:
 
 # Создание экземпляра бота
 bot = telebot.TeleBot(bot_token)
-
-# Класс для работы с API
-class CurrencyConverter:
-    @staticmethod
-    def get_price(base, quote, amount):
-        url = f"https://api.exchangerate-api.com/v4/latest/{base}"
-        response = requests.get(url)
-        data = json.loads(response.text)
-        conversion_rate = data['rates'][quote]
-        result = conversion_rate * amount
-        return result
 
 # Обработчик команды /start или /help
 @bot.message_handler(commands=['start', 'help'])
@@ -48,8 +37,8 @@ def convert_currency(message):
             converted_amount = CurrencyConverter.get_price(base_currency, quote_currency, amount)
             result_message = f"{amount} {base_currency} = {converted_amount} {quote_currency}"
             bot.reply_to(message, result_message)
-        except KeyError:
-            error_message = "Неверные коды валюты. Пожалуйста, используйте корректные коды валют."
+        except APIException as e:
+            error_message = f"Ошибка: {e.message}"
             bot.reply_to(message, error_message)
 
 # Запуск бота
