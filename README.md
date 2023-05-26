@@ -6,20 +6,17 @@ Telegram Currency Converter Bot
 
 Установите необходимые зависимости, выполнив следующую команду:
 
-
 pip install pytelegrambotapi
 Создайте файл config.py в корневой директории проекта и добавьте в него токен вашего Telegram-бота. Файл должен иметь следующую структуру:
 
-python
-Copy code
+
 {
     "bot_token": "YOUR_BOT_TOKEN"
 }
+
 Использование
 Запустите бота, выполнив следующую команду:
 
-shell
-Copy code
 python bot.py
 В Telegram найдите вашего бота по имени и начните чат с ним.
 
